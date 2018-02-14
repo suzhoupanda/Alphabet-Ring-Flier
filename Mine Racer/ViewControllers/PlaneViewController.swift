@@ -73,6 +73,7 @@ class PlaneViewController: UIViewController{
     var pauseMenu: SCNNode!
     var gameOverMenu: SCNNode!
     var gameWinMenu: SCNNode!
+    var pauseText: SCNText?
     
     var followPortraitCameraNode: SCNNode!
     var followLandscapeCameraNode: SCNNode!
@@ -100,12 +101,20 @@ class PlaneViewController: UIViewController{
     var encounterIsFinished: Bool = false{
         didSet{
             if(encounterIsFinished == true){
-                gameHelper.state == .GameOver
-             
-                showGameLossMenu(withReason: "Time Up!")
-                print("Encounter is finished...Game over")
+                self.worldNode.runAction(completion: {
+                    self.gameHelper.state = .GameOver
+                    self.showGameLossMenu(withReason: "OUT OF TIME!")
+                    print("Encounter is finished...Game over")
+                    
+                }, afterTime: 1.00)
+                
+              
             }
         }
+    }
+    
+    var engineAudioSource: SCNAudioSource?{
+        return AudioManager.sharedInstance.getAudioSource(ofType: .engine1)
     }
     
     //MAKR:     Word Arrays
@@ -223,6 +232,8 @@ class PlaneViewController: UIViewController{
             
             self.view.layoutIfNeeded()
         })
+        
+
     }
     
     func cleanUpEnemyManagers(){
@@ -299,142 +310,8 @@ class PlaneViewController: UIViewController{
     }
     
     
-    //MARK: ******************** Gameplay Menu Options
-    
-    /** Helper functions for setting up menu buttons that can be used during gameplay **/
-    
-    func showGameLossMenu(withReason reasonText: String){
-        
-        self.gameOverMenu = SCNNode()
-        
-        let reasonButton = getMenuButton(withName: reasonText, andPosition: .upper3)
-        self.gameOverMenu.addChildNode(reasonButton)
-
-        let restartButton = getMenuButton(withName: "Restart Level", andPosition: .upper2)
-        self.gameOverMenu.addChildNode(restartButton)
-
-        let backToMainMenu = getMenuButton(withName: "Back To Main Menu", andPosition: .upper1)
-        self.gameOverMenu.addChildNode(backToMainMenu)
-
-        self.menuNode.addChildNode(self.gameOverMenu)
-        self.gameOverMenu.position = MenuPosition.GameOver.getPosition()
-        
-        worldNode.isPaused = true
-        self.scnScene.isPaused = true
-        
-        AudioManager.sharedInstance.addSound(ofType: .gameLoss, toNode: gameOverMenu, removeAfter: 1.50)
-
-
-    }
-    
-    func showGameWinMenu(){
-        
-        self.gameWinMenu = SCNNode()
-        
-        let backToMenuButton = getMenuButton(withName: "Back to Main Menu", andPosition: .upper3)
-        self.gameWinMenu.addChildNode(backToMenuButton)
-        
-        let nextLevelButton = getMenuButton(withName: "Next Level", andPosition: .upper2)
-        self.gameWinMenu.addChildNode(nextLevelButton)
-        
-        
-        self.menuNode.addChildNode(self.gameWinMenu)
-        self.gameWinMenu.position = MenuPosition.GameWin.getPosition()
-        
-        worldNode.isPaused = true
-        self.scnScene.isPaused = true
-        
-        AudioManager.sharedInstance.addSound(ofType: .gameWin, toNode: gameWinMenu, removeAfter: 1.50)
-    }
    
-    
-    func setupGamePauseMenu(){
         
-        self.pauseMenu = SCNNode()
-        
-        let restartButton = getMenuButton(withName: "Restart Level", andPosition: .upper1)
-        self.pauseMenu.addChildNode(restartButton)
-        
-        let backToMainMenuButton = getMenuButton(withName: "Back To Main Menu", andPosition: .lower1)
-        self.pauseMenu.addChildNode(backToMainMenuButton)
-        
-        self.menuNode.addChildNode(self.pauseMenu)
-        self.pauseMenu.position = MenuPosition.PauseMenu.getPosition()
-        
-        worldNode.isPaused = true
-        self.scnScene.isPaused = true
-        
-    }
-    
-    func getMenuButton(withName name: String, andPosition menuPosition: MenuPosition) -> SCNNode{
-        
-        let text = SCNText(string: name, extrusionDepth: 0.50)
-        text.font = UIFont.init(name: "Didot", size: 1.0)
-        
-        let diffuseMaterial = SCNMaterial()
-        diffuseMaterial.diffuse.contents = SKColor.red
-        text.materials = [diffuseMaterial]
-        
-        let button = SCNNode(geometry: text)
-        button.name = name
-        button.position = menuPosition.getPosition()
-        return button
-    }
-    
-    
-    func removeGamePauseMenu(){
-        if(self.pauseMenu == nil){
-            return
-        }
-        
-        self.pauseMenu.removeFromParentNode()
-        
-        worldNode.isPaused = false
-        self.scnScene.isPaused = false
-    }
-    
-    func removeGameOverMenu(){
-        if(self.gameOverMenu == nil){
-            return
-        }
-        
-        self.gameOverMenu.removeFromParentNode()
-    }
-    
-    func removeGameWinMenu(){
-        if(self.gameWinMenu == nil){
-            return
-        }
-        
-        self.gameWinMenu.removeFromParentNode()
-    
-    }
-    
-    func loadMenuNode(){
-        
-        self.menuNode = SCNNode()
-        
-        let pauseText = SCNText(string: "Pause Game", extrusionDepth: 0.1)
-        pauseText.chamferRadius = 0.00
-        pauseText.font = UIFont.init(name: "Avenir", size: 0.7)
-        pauseText.isWrapped = true
-        pauseText.alignmentMode = kCAAlignmentLeft
-        pauseText.truncationMode = kCATruncationNone
-        
-        let redCoating = SCNMaterial()
-        redCoating.diffuse.contents = SKColor.red
-        pauseText.materials = [redCoating]
-        
-        let pauseButton = SCNNode(geometry: pauseText)
-        
-        pauseButton.name = "pauseButton"
-        
-        self.menuNode.addChildNode(pauseButton)
-        
-        self.portraitCamera.addChildNode(self.menuNode)
-        self.menuNode.position = SCNVector3.init(-0.7, -7.0, -12)
-    }
-    
     func loadEncounterSeries(){
         
         print("Loading encounter series of Level Track: \(gameHelper.levelTrack.rawValue), for Difficulty Level of: \(gameHelper.difficulty.rawValue), Level: \(gameHelper.level)")
@@ -603,69 +480,7 @@ class PlaneViewController: UIViewController{
 
     }
     
-    //MARK: ************** Position Functions for Positioning the Preamble Menus
-    
-    func positionPlaneColorOptionsMenu(isShowing: Bool){
-        
-        if(isShowing){
-            /** Move menu into position, have each button individually rotate into view **/
-            let movePos = SCNVector3(-25.0, -10.0, -42.0)
-            self.planeColorMenu.runAction(SCNAction.move(to: movePos, duration: 0.50))
-            
-        } else{
-            
-            /** Have individual buttons rotate out of view, move men out of position **/
-            let movePos = SCNVector3(-25.0, -200.0, -42.0)
-            self.planeColorMenu.runAction(SCNAction.move(to: movePos, duration: 0.50))
-            
-        }
-    }
-    
-    func positionGameOptionsMenu(isShowing: Bool){
-        
-        if(isShowing){
-            /** Move menu into position, have each button individually rotate into view **/
-            let movePos = SCNVector3(-25.0, -10.0, -42.0)
-            self.gameOptionsMenu.runAction(SCNAction.move(to: movePos, duration: 0.50))
-
-        } else{
-            
-            /** Have individual buttons rotate out of view, move men out of position **/
-            let movePos = SCNVector3(-25.0, -200.0, -42.0)
-            self.gameOptionsMenu.runAction(SCNAction.move(to: movePos, duration: 0.50))
-
-        }
-    }
-    
-    func positionStartMenu(isShowing: Bool){
-        
-        if(isShowing){
-            /** Move menu into position, have each button individually rotate into view **/
-            let movePos = SCNVector3(-25.0, 0.0, -42.0)
-            self.startMenu.runAction(SCNAction.move(to: movePos, duration: 0.50))
-
-        } else{
-            /** Have individual buttons rotate out of view, move men out of position **/
-            let movePos = SCNVector3(-25.0, -200.0, -42.0)
-            self.startMenu.runAction(SCNAction.move(to: movePos, duration: 0.50))
-        }
-    }
-    
-    func positionLevelTracksMenu(isShowing: Bool){
-        
-        if(isShowing){
-            /** Move menu into position, have each button individually rotate into view **/
-            let movePos = SCNVector3(-25.0, -10.0, -42.0)
-            self.levelTrackMenu.runAction(SCNAction.move(to: movePos, duration: 0.50))
-
-        } else{
-            /** Have individual buttons rotate out of view, move men out of position **/
-            let movePos = SCNVector3(-25.0, -200.0, -42.0)
-            self.levelTrackMenu.runAction(SCNAction.move(to: movePos, duration: 0.50))
-
-        }
-    }
-    
+  
     
     func loadAlienHeadManager(){
         alienHeadManager = AlienHeadManager(with: self)
@@ -727,7 +542,22 @@ class PlaneViewController: UIViewController{
     }
 
    
+    func setupEngineAudioPlayer(){
+        if let engineAudioSrc = self.engineAudioSource{
+            
+            let audioPlayer = SCNAudioPlayer(source: engineAudioSrc)
+            self.worldNode.addAudioPlayer(audioPlayer)
+            
+            audioPlayer.didFinishPlayback = {
+                self.setupEngineAudioPlayer()
+            }
+            
+        }
+    }
     
+    func removeEngineAudioPlayer(){
+        worldNode.removeAllAudioPlayers()
+    }
     
     func setupNodes(){
         
@@ -742,6 +572,7 @@ class PlaneViewController: UIViewController{
         player = Plane(withReferenceNode: planeReferenceNode)
         
         player.node.position = SCNVector3.init(0.0, 0.0, 0.0)
+        
         
         followPortraitCameraNode = scnScene.rootNode.childNode(withName: "followPortraitCamera", recursively: true)!
         followLandscapeCameraNode = scnScene.rootNode.childNode(withName: "followLandscapeCamera", recursively: true)!
@@ -766,6 +597,9 @@ class PlaneViewController: UIViewController{
     }
 
     func returnToMainMenu(){
+        
+        print("Executing returnToMainMenu function....")
+        
         let transition = SKTransition.flipVertical(withDuration: 0.50)
         self.scnView.present(self.preambleScene, with: transition, incomingPointOfView: nil, completionHandler: {
             
@@ -785,6 +619,7 @@ class PlaneViewController: UIViewController{
     
     func restartCurrentLevel(){
         self.cleanUpEnemyManagers()
+        
         if let currentEncounterSeries = self.currentEncounterSeries{
             currentEncounterSeries.terminateEncounterSeries()
             self.currentEncounterSeries = nil
@@ -799,7 +634,6 @@ class PlaneViewController: UIViewController{
         
         gameHelper.level += 1
         self.cleanUpEnemyManagers()
-        
       
         
         if let currentEncounter = self.currentEncounterSeries{
@@ -811,162 +645,6 @@ class PlaneViewController: UIViewController{
         self.restartWord = nil
         
         loadGame()
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        
-        let touch = touches.first!
-        let location = touch.location(in: scnView)
-        
-        let hitResults = scnView.hitTest(location, options: nil)
-        
-        if let node = hitResults.first?.node{
-            
-            if(gameHelper.state == .GameOver){
-                
-                
-                if(node.name == nil){
-                    return
-                }
-                
-                
-                switch node.name!{
-                    case "Next Level":
-                        loadNextLevel()
-                        break
-                    case "Back to Main Menu":
-                        returnToMainMenu()
-                        break
-                    case "Restart Level":
-                       restartCurrentLevel()
-                        break
-                    default:
-                        break
-                }
-                
-            }
-            
-            
-            if(gameHelper.state == .TapToPlay){
-                
-                if(node.name == nil){
-                    return
-                }
-                
-                switch node.name!{
-                    case "StartGame":
-                        positionStartMenu(isShowing: false)
-                        loadGame()
-                        break
-                    case "GameOptions":
-                        positionGameOptionsMenu(isShowing: true)
-                        positionStartMenu(isShowing: false)
-                        break
-                    case "LevelTracks":
-                        positionLevelTracksMenu(isShowing: true)
-                        positionStartMenu(isShowing: false)
-                        break
-                    case "PlaneColors":
-                        positionPlaneColorOptionsMenu(isShowing: true)
-                        positionStartMenu(isShowing: false)
-                        break
-                    case "Red":
-                        gameHelper.planeType = .red
-                        positionPlaneColorOptionsMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    case "Blue":
-                        gameHelper.planeType = .blue
-                        positionPlaneColorOptionsMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    case "Yellow":
-                        gameHelper.planeType = .yellow
-                        positionPlaneColorOptionsMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    case "Hard":
-                        gameHelper.difficulty = .Hard
-                        positionGameOptionsMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    case "Medium":
-                        gameHelper.difficulty = .Medium
-                        positionGameOptionsMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    case "Easy":
-                        gameHelper.difficulty = .Easy
-                        positionGameOptionsMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    case "SpaceShips":
-                        gameHelper.levelTrack = .SpaceShips
-                        positionLevelTracksMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    case "SpikeBalls":
-                        gameHelper.levelTrack = .SpikeBalls
-                        positionLevelTracksMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                     case "FireBalls":
-                        gameHelper.levelTrack = .FireBalls
-                        positionLevelTracksMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    case "AlienHeads":
-                        gameHelper.levelTrack = .AlienHeads
-                        positionLevelTracksMenu(isShowing: false)
-                        positionStartMenu(isShowing: true)
-                        break
-                    default:
-                        print("No logic implemented for this node")
-                        break
-
-                }
-
-            }
-            
-            if(gameHelper.state == .Playing){
-                
-                if(node.name == nil){
-                    return
-                }
-                
-                if node.name == "pauseButton"{
-                    
-                    if(self.scnScene.isPaused){
-                        self.removeGamePauseMenu()
-                    } else{
-                        self.setupGamePauseMenu()
-                    }
-                    
-                    
-                    print("Game has been paused")
-                    return
-                }
-                
-                
-                switch node.name!{
-                    case "Restart Level":
-                        restartCurrentLevel()
-                        break
-                    case "Back To Main Menu":
-                        returnToMainMenu()
-                        break
-                    default:
-                        break
-                    
-                }
-                
-                if(node.name == "biplane_blue"){
-                    print("Touched the plane, will jjump button")
-                }
-            }
-    
-        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -1030,179 +708,3 @@ class PlaneViewController: UIViewController{
     
 }
 
-extension PlaneViewController: SCNSceneRendererDelegate{
-    
-    
-    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        
-        if(time == 0){
-            lastUpdatedTime = 0
-        }
-        
-        
-        if(gameHelper.state == .Playing){
-            
-            if(self.scnScene.isPaused || self.worldNode.isPaused){
-                return
-            }
-            
-            if(player.health <= 0){
-                gameHelper.state == .GameOver
-                showGameLossMenu(withReason: "Out of Lives!")
-            }
-            
-            if let wordInProgress = self.wordInProgress, let currentWord = self.currentWord{
-        
-                if(wordInProgress == currentWord){
-                    self.worldNode.runAction(
-                        SCNAction.sequence([
-                            SCNAction.wait(duration: 1.00),
-                        
-                            SCNAction.run({_ in
-                                self.gameHelper.state = .GameOver
-                                self.showGameWinMenu()
-
-                            })]))
-                }
-            }
-            
-
-            letterRingManager.update(with: time)
-            spaceCraftManager.update(with: time)
-            fireballManager.update(with: time)
-            alienHeadManager.update(with: time)
-            
-            cleanExcessNodes()
-            
-            updateCameraPositions()
-            
-        }
-        
-        lastUpdatedTime = time
-        
-    }
-    
-    func cleanExcessNodes(){
-        
-        for node in worldNode.childNodes{
-            if node.position.z > 30{
-                node.removeFromParentNode()
-            }
-        }
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, didApplyAnimationsAtTime time: TimeInterval) {
-        
-     
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
-        
-       
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, didApplyConstraintsAtTime time: TimeInterval) {
-        
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, didRenderScene scene: SCNScene, atTime time: TimeInterval) {
-        
-    }
-    
-    func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
-        
-    }
-    
-    
-}
-
-extension PlaneViewController: SCNPhysicsContactDelegate{
-    
-    
-    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
-        
-        
-        var contactNode: SCNNode!
-        
-        if contact.nodeA.name == "player"{
-            contactNode = contact.nodeB
-        } else {
-            contactNode = contact.nodeA
-        }
-        
-        
-        if lastContactNode != nil && lastContactNode == contactNode{
-            return
-        }
-        
-        switch UInt32(contactNode.physicsBody!.categoryBitMask){
-            case CollisionMask.PortalCenter.rawValue:
-                if let letterName = contactNode.name,let contactLetter = letterName.last, let nextLetter = self.tempWord?.first{
-                    if contactLetter == nextLetter{
-                        
-                        AudioManager.sharedInstance.addSound(ofType: .acquireLetter, toNode: self.player.node, removeAfter: 1.00)
-                        
-                        self.tempWord?.removeFirst()
-                        self.wordInProgress!.append(contactLetter)
-                        print("The current word is \(self.wordInProgress!)")
-                        self.hud.updateHUD()
-
-
-
-                    }
-                    
-                }
-               
-            
-                break
-        case CollisionMask.DetectionNode.rawValue:
-            print("Player has been detected by the space craft")
-            print("The contactNode name is \(contactNode.name!)")
-            if(contactNode.name != nil && (contactNode.name!.contains("SpaceCraft") || contactNode.name!.contains("Turret"))){
-                print("Sending notificaiton...")
-                NotificationCenter.default.post(name: Notification.WasDetectedBySpaceCraftNotification, object: self, userInfo: [
-                    "nodeName":contactNode.name!
-                    ])
-            }
-            break
-        case CollisionMask.Bullet.rawValue:
-            print("Player has been hit by a bullet")
-
-            player.takeDamage(by: 1)
-            hud.updateHUD()
-
-            print("Current player's health is: \(self.player.health)")
-            break
-        case CollisionMask.Enemy.rawValue:
-            print("Player has been hit by an enemy")
-            player.takeDamage(by: 1)
-            hud.updateHUD()
-
-            print("Current player's health is: \(self.player.health)")
-            break
-        case CollisionMask.Obstacle.rawValue:
-            print("Player has been hit by obstacle")
-            player.takeDamage(by: 1)
-            hud.updateHUD()
-
-            print("Current player's health is: \(self.player.health)")
-            break 
-        default:
-                print("No contact logic implemented, contactNode info - category mask: \(contactNode.physicsBody!.categoryBitMask), contact mask: \(contactNode.physicsBody!.contactTestBitMask)")
-        }
-        
-        //TODO: implement contact logic here
-        
-        lastContactNode = contactNode
-    }
-    
-    func physicsWorld(_ world: SCNPhysicsWorld, didUpdate contact: SCNPhysicsContact) {
-        
-    }
-    
-    func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
-        
-    }
-    
-    
-}

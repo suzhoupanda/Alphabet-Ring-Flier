@@ -29,7 +29,11 @@ class EncounterSeries{
         }
     }
     
-  
+    /**
+    func showEncounterSeriesInformation(){
+        print("The total wait time for this encounter is: \(totalSeriesTime)")
+    }
+    **/
     
     func showFirstEncounterInformation(){
     
@@ -48,6 +52,90 @@ class EncounterSeries{
         print("Notification received by EncounterSeries....requesting restart")
         self.hasTerminatedEncounterSeries = true
     }
+    
+    /**
+    var totalSeriesTime: Double{
+        return getEncounterTime()
+    }
+
+    var numberOfEncounters: Int{
+        return getNumberOfEncounters(runningTotal: &nil, currentEncounter: nil)
+    }
+    **/
+
+    //MARK: ******* NOT YET IMPLEMENTED
+    
+    /**
+     func getNumberOfEncounters(runningTotal: inout Int?, currentEncounter: Encounter?) -> Int{
+        
+
+        if(runningTotal == nil){
+            runningTotal = 0
+        }
+        
+        if(currentEncounter == nil && self.firstEncounter == nil){
+            
+            runningTotal = 0
+            
+        } else if(currentEncounter == nil && self.firstEncounter != nil && self.firstEncounter.nextEncounter == nil) {
+            
+            runningTotal! += 1
+            
+        } else if(currentEncounter == nil && self.firstEncounter != nil && self.firstEncounter.nextEncounter != nil){
+            
+        }else if(currentEncounter != nil && self.currentEncounter?.nextEncounter == nil) {
+           
+            runningTotal! += 1
+         
+        } else if(currentEncounter != nil && self.currentEncounter?.nextEncounter != nil){
+            
+            runningTotal! += 1
+            getNumberOfEncounters(runningTotal: &runningTotal, currentEncounter: currentEncounter!.nextEncounter!)
+            
+        }
+        
+        return runningTotal!
+    }
+ 
+ **/
+    
+    
+    /**
+
+    private func getEncounterTime(withEncounter encounter: Encounter? = nil) -> Double{
+        
+        let currentEncounter = encounter ?? self.firstEncounter
+        
+        var time = currentEncounter.waitTime
+        
+        if let nextEncounter = self.currentEncounter?.getNextEncounter(){
+            
+            time += getEncounterTime(withEncounter: nextEncounter)
+            
+        } else {
+            return time
+        }
+        
+        /** Return statement will never be executed, only provided to satisfy compiler **/
+        return 0.00
+    }
+    **/
+    
+    /**
+    private func getTotalLettersGenerated() -> Int{
+        
+        var numberOfLetters = self.firstEncounter.numberOfLetters ?? 0
+        
+        if let nextEncounter = self.firstEncounter.getNextEncounter(){
+            numberOfLetters += nextEncounter.numberOfLetters ?? 0
+            
+            return getTotalLettersGenerated()
+        } else {
+            return numberOfLetters
+        }
+    }
+ 
+    **/
     
     init(planeViewController: PlaneViewController, firstEncounter: Encounter) {
         self.firstEncounter = firstEncounter
@@ -338,89 +426,3 @@ class Encounter{
         return nextEncounter
     }
 }
-
-/**
- var totalSeriesTime: Double{
- return getEncounterTime()
- }
- 
- var numberOfEncounters: Int{
- return getNumberOfEncounters(runningTotal: &nil, currentEncounter: nil)
- }
- **/
-
-//MARK: ******* NOT YET IMPLEMENTED
-
-/**
- func getNumberOfEncounters(runningTotal: inout Int?, currentEncounter: Encounter?) -> Int{
- 
- 
- if(runningTotal == nil){
- runningTotal = 0
- }
- 
- if(currentEncounter == nil && self.firstEncounter == nil){
- 
- runningTotal = 0
- 
- } else if(currentEncounter == nil && self.firstEncounter != nil && self.firstEncounter.nextEncounter == nil) {
- 
- runningTotal! += 1
- 
- } else if(currentEncounter == nil && self.firstEncounter != nil && self.firstEncounter.nextEncounter != nil){
- 
- }else if(currentEncounter != nil && self.currentEncounter?.nextEncounter == nil) {
- 
- runningTotal! += 1
- 
- } else if(currentEncounter != nil && self.currentEncounter?.nextEncounter != nil){
- 
- runningTotal! += 1
- getNumberOfEncounters(runningTotal: &runningTotal, currentEncounter: currentEncounter!.nextEncounter!)
- 
- }
- 
- return runningTotal!
- }
- 
- **/
-
-
-/**
- 
- private func getEncounterTime(withEncounter encounter: Encounter? = nil) -> Double{
- 
- let currentEncounter = encounter ?? self.firstEncounter
- 
- var time = currentEncounter.waitTime
- 
- if let nextEncounter = self.currentEncounter?.getNextEncounter(){
- 
- time += getEncounterTime(withEncounter: nextEncounter)
- 
- } else {
- return time
- }
- 
- /** Return statement will never be executed, only provided to satisfy compiler **/
- return 0.00
- }
- **/
-
-/**
- private func getTotalLettersGenerated() -> Int{
- 
- var numberOfLetters = self.firstEncounter.numberOfLetters ?? 0
- 
- if let nextEncounter = self.firstEncounter.getNextEncounter(){
- numberOfLetters += nextEncounter.numberOfLetters ?? 0
- 
- return getTotalLettersGenerated()
- } else {
- return numberOfLetters
- }
- }
- 
- **/
-
-

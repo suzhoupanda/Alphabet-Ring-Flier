@@ -29,6 +29,10 @@
 		BD39E2D81FB3160D00FD031C /* EnemyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD39E2D71FB3160D00FD031C /* EnemyManager.swift */; };
 		BD39E2DA1FB3199700FD031C /* NotificationNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD39E2D91FB3199700FD031C /* NotificationNames.swift */; };
 		BD39E2DC1FB320D700FD031C /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD39E2DB1FB320D700FD031C /* GameObject.swift */; };
+		BD3ADE4F1FC4243A004A35BD /* PlaneViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3ADE4E1FC4243A004A35BD /* PlaneViewController+UI.swift */; };
+		BD3ADE511FC42640004A35BD /* PlaneViewController+TouchesBegan.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3ADE501FC42640004A35BD /* PlaneViewController+TouchesBegan.swift */; };
+		BD3ADE531FC426C7004A35BD /* PlaneViewController+SceneRendererDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3ADE521FC426C7004A35BD /* PlaneViewController+SceneRendererDelegate.swift */; };
+		BD3ADE551FC426EB004A35BD /* PlaneViewController+PhysicsContactDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3ADE541FC426EB004A35BD /* PlaneViewController+PhysicsContactDelegate.swift */; };
 		BD3BD6301FB308FB00346B37 /* SCNVector3+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3BD62F1FB308FB00346B37 /* SCNVector3+Extension.swift */; };
 		BD3E28A61FBEA5A30015420B /* BackgroundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3E28A51FBEA5A30015420B /* BackgroundManager.swift */; };
 		BD3EB87E1FBD9DB500373A9D /* OperationsStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3EB87D1FBD9DB500373A9D /* OperationsStack.swift */; };
@@ -55,6 +59,7 @@
 		BD64A8411FBAFA1A007BA2A3 /* TargetWords.plist in Resources */ = {isa = PBXBuildFile; fileRef = BD64A8401FBAFA1A007BA2A3 /* TargetWords.plist */; };
 		BD98A4351FB733310096231E /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD98A4341FB733310096231E /* HUD.swift */; };
 		BD9ED0861FB4A9AB002F6997 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9ED0851FB4A9AB002F6997 /* String+Extension.swift */; };
+		BDB158721FC0690600A8B042 /* engine1.wav in Resources */ = {isa = PBXBuildFile; fileRef = BDB158701FC068FE00A8B042 /* engine1.wav */; };
 		BDD98E101FADC0F9007F71AF /* CollisionMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD98E0F1FADC0F9007F71AF /* CollisionMask.swift */; };
 		BDE690041FB0C100002655BB /* Structures2.scn in Resources */ = {isa = PBXBuildFile; fileRef = BDE690031FB0C100002655BB /* Structures2.scn */; };
 		BDE690061FB0CD25002655BB /* Plan in Resources */ = {isa = PBXBuildFile; fileRef = BDE690051FB0CD25002655BB /* Plan */; };
@@ -98,6 +103,10 @@
 		BD39E2D71FB3160D00FD031C /* EnemyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnemyManager.swift; sourceTree = "<group>"; };
 		BD39E2D91FB3199700FD031C /* NotificationNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationNames.swift; sourceTree = "<group>"; };
 		BD39E2DB1FB320D700FD031C /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
+		BD3ADE4E1FC4243A004A35BD /* PlaneViewController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaneViewController+UI.swift"; sourceTree = "<group>"; };
+		BD3ADE501FC42640004A35BD /* PlaneViewController+TouchesBegan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaneViewController+TouchesBegan.swift"; sourceTree = "<group>"; };
+		BD3ADE521FC426C7004A35BD /* PlaneViewController+SceneRendererDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaneViewController+SceneRendererDelegate.swift"; sourceTree = "<group>"; };
+		BD3ADE541FC426EB004A35BD /* PlaneViewController+PhysicsContactDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlaneViewController+PhysicsContactDelegate.swift"; sourceTree = "<group>"; };
 		BD3BD62F1FB308FB00346B37 /* SCNVector3+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SCNVector3+Extension.swift"; sourceTree = "<group>"; };
 		BD3E28A51FBEA5A30015420B /* BackgroundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundManager.swift; sourceTree = "<group>"; };
 		BD3EB87D1FBD9DB500373A9D /* OperationsStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationsStack.swift; sourceTree = "<group>"; };
@@ -126,6 +135,7 @@
 		BD64A8401FBAFA1A007BA2A3 /* TargetWords.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = TargetWords.plist; sourceTree = "<group>"; };
 		BD98A4341FB733310096231E /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 		BD9ED0851FB4A9AB002F6997 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		BDB158701FC068FE00A8B042 /* engine1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = engine1.wav; sourceTree = "<group>"; };
 		BDD98E0F1FADC0F9007F71AF /* CollisionMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionMask.swift; sourceTree = "<group>"; };
 		BDE690031FB0C100002655BB /* Structures2.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Structures2.scn; sourceTree = "<group>"; };
 		BDE690051FB0CD25002655BB /* Plan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Plan; sourceTree = "<group>"; };
@@ -278,6 +288,10 @@
 				BD4217281FAC2F8300DB3E0F /* GameViewController.swift */,
 				BD45D5D81FAE9D900045BCA3 /* PlaneViewController.swift */,
 				BD98A4341FB733310096231E /* HUD.swift */,
+				BD3ADE4E1FC4243A004A35BD /* PlaneViewController+UI.swift */,
+				BD3ADE501FC42640004A35BD /* PlaneViewController+TouchesBegan.swift */,
+				BD3ADE521FC426C7004A35BD /* PlaneViewController+SceneRendererDelegate.swift */,
+				BD3ADE541FC426EB004A35BD /* PlaneViewController+PhysicsContactDelegate.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -285,6 +299,7 @@
 		BDF471C01FC03CD300E67DAF /* SoundFx */ = {
 			isa = PBXGroup;
 			children = (
+				BDB158701FC068FE00A8B042 /* engine1.wav */,
 				BDF471C11FC03CE500E67DAF /* hitHelmet1.wav */,
 				BDF471C21FC03CE600E67DAF /* hitHelmet2.wav */,
 				BDF471C61FC03CE600E67DAF /* hitHelmet3.wav */,
@@ -362,6 +377,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB158721FC0690600A8B042 /* engine1.wav in Resources */,
 				BD3169CD1FB59121007BD8D3 /* spark.png in Resources */,
 				BDF471D81FC03CFC00E67DAF /* time.wav in Resources */,
 				BDF471D51FC03CFC00E67DAF /* power_up.wav in Resources */,
@@ -397,12 +413,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD3ADE531FC426C7004A35BD /* PlaneViewController+SceneRendererDelegate.swift in Sources */,
 				BD4650BB1FB695D6002B95F5 /* VelocityType.swift in Sources */,
 				BDD98E101FADC0F9007F71AF /* CollisionMask.swift in Sources */,
 				BD3EB8801FBD9DCA00373A9D /* QueueManager.swift in Sources */,
 				BD34F15F1FB1C63F00750CDD /* Encounter.swift in Sources */,
 				BD34F1591FB1A62900750CDD /* BoundaryPoints.swift in Sources */,
 				BD45D5DF1FAEA0250045BCA3 /* Plane.swift in Sources */,
+				BD3ADE511FC42640004A35BD /* PlaneViewController+TouchesBegan.swift in Sources */,
 				BD98A4351FB733310096231E /* HUD.swift in Sources */,
 				BD3903281FBDB0D100DBA6AC /* EncounterTimer.swift in Sources */,
 				BD0201E01FB2D0B6008E945D /* SpaceCraft.swift in Sources */,
@@ -421,6 +439,7 @@
 				BD3169D31FB59CCB007BD8D3 /* FireballManager.swift in Sources */,
 				BDF471DE1FC0462200E67DAF /* Notifications+Extension.swift in Sources */,
 				BD348C681FAD94910059F4FA /* BasicCharacter.swift in Sources */,
+				BD3ADE551FC426EB004A35BD /* PlaneViewController+PhysicsContactDelegate.swift in Sources */,
 				BD34F15D1FB1C36800750CDD /* RingCreator.swift in Sources */,
 				BD39E2DC1FB320D700FD031C /* GameObject.swift in Sources */,
 				BD64A83F1FBAF98A007BA2A3 /* Array+HelperFunctions.swift in Sources */,
@@ -430,6 +449,7 @@
 				BD47BCE31FAF19A800172B04 /* EnemyGenerator.swift in Sources */,
 				BD45D5DB1FAE9EE10045BCA3 /* PointOfView.swift in Sources */,
 				BD0201E31FB2DA6B008E945D /* Turret.swift in Sources */,
+				BD3ADE4F1FC4243A004A35BD /* PlaneViewController+UI.swift in Sources */,
 				BD45D5E91FAEBEAE0045BCA3 /* RingGenerator.swift in Sources */,
 				BD4217251FAC2F8300DB3E0F /* AppDelegate.swift in Sources */,
 				BD3E28A61FBEA5A30015420B /* BackgroundManager.swift in Sources */,
@@ -575,7 +595,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T9J39WJJ9G;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Mine Racer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ChangzhouPanda.Mine-Racer";
@@ -590,7 +610,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = T9J39WJJ9G;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "Mine Racer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ChangzhouPanda.Mine-Racer";

@@ -79,4 +79,15 @@ extension SCNNode{
         
     }
     
+    func runAction(completion: @escaping () -> (Void), afterTime timeInterval: TimeInterval){
+        self.runAction(
+            SCNAction.sequence([
+                SCNAction.wait(duration: timeInterval),
+                
+                SCNAction.run({_ in
+                    completion()
+                    
+                })]))
+    }
+    
 }

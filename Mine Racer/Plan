@@ -6,7 +6,6 @@
 //need to make sure pause button is reposition for switch to landscape
 //make sure all nodes are removed - node removal functions are in place
 //limit player movement to certain screen area
-//include notifications to pause game when app resigns into background or comes back into foreground
 
 //practice animating object properties - like torus outer ring radius, using SCN.commit(), etc.
 //use  linked list to add a series of objects one after another - chian multiple functions together

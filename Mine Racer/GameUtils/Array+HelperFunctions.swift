@@ -13,6 +13,10 @@ extension Array{
     
     func getRandomElement() -> Any?{
         
+        if(self.isEmpty){
+            return nil
+        }
+        
         let count = self.count
         
         let randomIdx = Int(arc4random_uniform(UInt32(count)))

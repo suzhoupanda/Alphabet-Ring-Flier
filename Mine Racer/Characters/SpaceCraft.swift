@@ -97,6 +97,8 @@ class SpaceCraft{
         configureDefaultLookAtConstraint(forSpawnPoint: spawnPoint)
         configureAuxiliaryGeometries()
         configurePhysics()
+        
+        removeSpaceCraft()
     }
     
     
@@ -323,8 +325,13 @@ class SpaceCraft{
 
         bulletNode.configureWithBulletPhysicsProperties()
         
+        bulletNode.removeAfterTime(waitTime: 1.00)
         
         return bulletNode
     }
+    
+    
+    
+   
 
 }
